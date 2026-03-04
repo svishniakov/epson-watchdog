@@ -37,32 +37,47 @@ When this happens, macOS CUPS marks the queue as `disabled`, and print jobs fail
 ### Prerequisites
 
 - macOS 11+
-- Epson L3150 printer (or other Wi-Fi Epson printer) already added to System Settings > Printers
-- Terminal access
+- [Rust](https://rustup.rs/) 1.75+ (`curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh`)
+- Epson L3150 printer already added to **System Settings → Printers & Scanners**
 
-### Quick Start
+### Install from GitHub
 
 ```bash
-# 1. Download or build the binary
-cd ~/Sites/epson
-cargo build --release
+# 1. Install the binary directly from the repository
+cargo install --git https://github.com/svishniakov/epson-watchdog
 
-# 2. Install (printer must be in CUPS already)
-./target/release/epson-watchdog install --use-existing
+# 2. Set up the watchdog (printer must already be in CUPS)
+epson-watchdog install --use-existing
 
-# 3. Verify installation
-./target/release/epson-watchdog status
+# 3. Verify
+epson-watchdog status
 ```
+
+`cargo install` builds the binary and places it in `~/.cargo/bin/`, which is already in your `PATH` after Rust installation.
 
 ### What Gets Installed
 
 ```
-~/Library/LaunchAgents/com.epson.l3150.watchdog.plist    # launchd config
+~/.cargo/bin/epson-watchdog                               # Binary
+~/Library/LaunchAgents/com.epson.l3150.watchdog.plist    # launchd agent
 ~/.config/epson-watchdog/config.toml                      # Watchdog settings
 ~/Library/Logs/epson-watchdog/epson-watchdog.log          # Runtime logs
 ```
 
-The watchdog starts immediately and runs on login automatically.
+The watchdog starts immediately and runs on every login automatically.
+
+### Update
+
+```bash
+cargo install --git https://github.com/svishniakov/epson-watchdog --force
+```
+
+### Uninstall binary
+
+```bash
+epson-watchdog uninstall
+cargo uninstall epson-watchdog
+```
 
 ## Usage
 
@@ -137,17 +152,12 @@ plist_path = "~/Library/LaunchAgents/com.epson.l3150.watchdog.plist"
 
 ## Building from Source
 
-### Prerequisites
-
-- [Rust 1.75+](https://rustup.rs/)
-
-### Build
-
 ```bash
+git clone https://github.com/svishniakov/epson-watchdog.git
+cd epson-watchdog
 cargo build --release
+# Binary: target/release/epson-watchdog
 ```
-
-Binary: `target/release/epson-watchdog` (3.6 MB)
 
 ### Run Tests
 
