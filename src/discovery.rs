@@ -14,6 +14,7 @@ pub struct PrinterInfo {
     /// Resolved IPv4 addresses
     pub addresses: Vec<IpAddr>,
     /// Service type that matched
+    #[allow(dead_code)]
     pub service_type: String,
 }
 
