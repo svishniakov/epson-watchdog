@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.epson.l3150.watchdog</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>{{BINARY_PATH}}</string>
+        <string>run</string>
+    </array>
+
+    <!-- Start immediately when loaded -->
+    <key>RunAtLoad</key>
+    <true/>
+
+    <!-- Restart on crash (non-zero exit), but NOT on clean exit -->
+    <key>KeepAlive</key>
+    <dict>
+        <key>SuccessfulExit</key>
+        <false/>
+    </dict>
+
+    <!-- Minimum seconds between restarts (prevents restart storm) -->
+    <key>ThrottleInterval</key>
+    <integer>30</integer>
+
+    <!-- Logs go to ~/Library/Logs/epson-watchdog/ (visible in Console.app) -->
+    <key>StandardOutPath</key>
+    <string>{{LOG_DIR}}/epson-watchdog.log</string>
+
+    <key>StandardErrorPath</key>
+    <string>{{LOG_DIR}}/epson-watchdog.log</string>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>RUST_LOG</key>
+        <string>info</string>
+    </dict>
+</dict>
+</plist>
